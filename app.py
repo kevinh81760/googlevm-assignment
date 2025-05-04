@@ -1,23 +1,34 @@
-from flask import Flask, render_template, request
+from flask import Flask
 
 app = Flask(__name__)
 
-@app.route('/')
-@app.route('/home')
+@app.route("/")
+@app.route("/home")
 def home():
-    return render_template('welcome.html')
+    return "Welcome to Justin's Web Page"
 
-@app.route('/page1')
+@app.route("/page1")
 def page1():
-    return render_template('page1.html')
+    return '''
+        <h1>Page 1</h1>
+        <a href="/home"><button>Home</button></a>
+        <a href="/page2"><button>Page 2</button></a>
+    '''
 
-@app.route('/page2', methods=['GET', 'POST'])
+@app.route("/page2", methods=["GET", "POST"])
 def page2():
+    from flask import request
     message = ""
-    if request.method == 'POST':
-        name = request.form.get('name')
-        message = f"Hello {name}"
-    return render_template('page2.html', message=message)
+    if request.method == "POST":
+        name = request.form.get("name")
+        message = f"<h2>Hello {name}</h2>"
+    return f'''
+        <form method="POST">
+            <input name="name" placeholder="Enter name">
+            <button type="submit">Submit</button>
+        </form>
+        {message}
+    '''
 
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5001)
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=5000)
